@@ -1,13 +1,13 @@
-name: Deploy para Netlify via GitHub Actions Exercicio Aula
+name: Deploy para Netlify no Windows Exercicio Pipeline
 
 on:
   push:
     branches:
-      - main  
+      - main
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout do repositório
@@ -20,9 +20,11 @@ jobs:
 
       - name: Instalar Netlify CLI
         run: npm install -g netlify-cli
+        shell: pwsh
 
       - name: Deploy para Netlify
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        run: netlify deploy --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN --dir="." --prod
+        run: netlify deploy --site=$env:NETLIFY_SITE_ID --auth=$env:NETLIFY_AUTH_TOKEN --dir="." --prod
+        shell: pwsh
